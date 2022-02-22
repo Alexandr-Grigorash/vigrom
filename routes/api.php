@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\WalletController;
+//use App\Http\Controllers\СurrencyController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -20,4 +21,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/wallet/balance', [WalletController::class, 'balance']);
 Route::post('/wallet/update', [WalletController::class, 'update']);
-
+//Route::post('/currencycontroller', [СurrencyController::class, 'index']);
