@@ -88,7 +88,7 @@ class WalletController extends Controller
             $newBalance = $wallet->balance + $request['amount'];
         }
         if ($request['transactionType'] == 'credit') {
-            if ($wallet->balance <= $request['amount']) {
+            if ($wallet->balance >= $request['amount']) {
                 $newBalance = $wallet->balance - $request['amount'];
             } else {
                 return response()->json([
@@ -98,6 +98,7 @@ class WalletController extends Controller
         }
 
         \DB::transaction(function () use ($request, $wallet, $newBalance) {
+            $old_balance = $wallet->balance;
             $wallet->balance = $newBalance;
             $wallet->save();
 
@@ -105,7 +106,7 @@ class WalletController extends Controller
                 'walletId' => $request['walletId'],
                 'before_currency' => $wallet->currency,
                 'after_currency' => $request['currency'],
-                'before_balance' => $wallet->balance,
+                'before_balance' => $old_balance,
                 'after_balance' => $newBalance,
                 'reason' => $request['reason']
             ]);
